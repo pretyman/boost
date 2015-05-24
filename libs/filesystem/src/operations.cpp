@@ -204,8 +204,19 @@ typedef struct _REPARSE_DATA_BUFFER {
          || ::mkdir(to.c_str(),from_stat.st_mode)!= 0))
 #   define BOOST_COPY_FILE(F,T,FailIfExistsBool)copy_file_api(F, T, FailIfExistsBool)
 #   define BOOST_MOVE_FILE(OLD,NEW)(::rename(OLD, NEW)== 0)
-#   define BOOST_RESIZE_FILE(P,SZ)(::truncate(P, SZ)== 0)
-
+#   if defined(__ANDROID__)
+    int BOOST_RESIZE_FILE(const char *path, off_t size)
+    {
+      int result = -1;
+      int fd = open(path, O_WRONLY);
+      if (fd != -1)
+        result = ftruncate(fd, size);
+      close(fd);
+      return result;
+    }
+#   else
+#       define BOOST_RESIZE_FILE(P,SZ)(::truncate(P, SZ)== 0)
+#   endif
 #   define BOOST_ERROR_NOT_SUPPORTED ENOSYS
 #   define BOOST_ERROR_ALREADY_EXISTS EEXIST
 

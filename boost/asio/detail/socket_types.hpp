@@ -278,7 +278,11 @@ const int max_iov_len = 16;
 typedef int socket_type;
 const int invalid_socket = -1;
 const int socket_error_retval = -1;
+#if defined(INET_ADDRSTRLEN)
 const int max_addr_v4_str_len = INET_ADDRSTRLEN;
+#else
+const int max_addr_v4_str_len = 16
+#endif
 #if defined(INET6_ADDRSTRLEN)
 const int max_addr_v6_str_len = INET6_ADDRSTRLEN + 1 + IF_NAMESIZE;
 #else // defined(INET6_ADDRSTRLEN)

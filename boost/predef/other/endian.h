@@ -53,7 +53,7 @@ information and acquired knowledge:
  */
 #if !BOOST_ENDIAN_BIG_BYTE && !BOOST_ENDIAN_BIG_WORD && \
     !BOOST_ENDIAN_LITTLE_BYTE && !BOOST_ENDIAN_LITTLE_WORD
-#   if BOOST_LIB_C_GNU
+#   if BOOST_LIB_C_GNU || defined(__ANDROID__)
 #       include <endian.h>
 #   else
 #       if BOOST_OS_MACOS
